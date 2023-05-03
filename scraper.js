@@ -119,7 +119,7 @@ async function igdb(term){
 }
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   next();
 });
 
@@ -137,7 +137,7 @@ app.get('/filelist', (req, res) => {
 });
 
 // start the server
-app.listen(3100, () => {
-  console.log('Server started on port 3100');
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
 });
 
