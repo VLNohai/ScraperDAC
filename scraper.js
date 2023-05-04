@@ -13,10 +13,8 @@ function cleanTitle(title) {
 async function filelist(title){
     const browser = await puppeteer.launch({ headless : 'new' });
     const page = await browser.newPage();
-    await page.goto('https://filelist.io'),
-    await page.waitForSelector('body > form > div > div > div:nth-child(2) > div:nth-child(8) > input')
-    await page.waitForSelector('#username');
-    await page.waitForSelector('#password');
+    await page.goto('https://filelist.io');
+    await page.waitForNetworkIdle();
 
     await page.click('#username');
     await page.type('#username', 'Endiuss');
@@ -66,12 +64,16 @@ async function igdb(term){
     const browser = await puppeteer.launch({ headless : "new" });
     const page = await browser.newPage();
     await page.goto('https://www.igdb.com/');
-    await page.waitForSelector('#search'); 
+    await page.waitForNetworkIdle();
 
     await page.click('#search');
     await page.type('#search', term);
 
-    await page.waitForSelector('div.panel-body.nopad');
+    try{
+      await page.waitForSelector('div.panel-body.nopad', {timeout : 10000});
+    }catch(error){
+      console.log('selector failed, continue anyway');
+    }
     await page.waitForNetworkIdle();
 
     const selector1 = 'div.panel-body.nopad > a:nth-child(1)';
@@ -119,7 +121,7 @@ async function igdb(term){
 }
 
 app.use((req, res, next) => {
-  //res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   next();
 });
 
